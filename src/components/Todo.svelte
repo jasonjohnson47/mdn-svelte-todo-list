@@ -1,10 +1,13 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, tick } from 'svelte';
+    import { selectOnFocus } from '../actions';
     const dispatch = createEventDispatcher();
     export let todo;
 
     let editing = false; // track editing mode
     let name = todo.name; // hold the name of the todo being edited
+    let nameEl; // reference to the name input DOM node
+    let editButtonPressed = false;
 
     function update(updatedTodo) {
         todo = {...todo, ...updatedTodo}; // applies modification to todo
@@ -25,9 +28,15 @@
         dispatch('remove', todo);
     }
 
-    function onEdit() {
+    async function onEdit() {
+        editButtonPressed = true;
         editing = true;
+        await tick();
+        nameEl.focus();
     }
+
+    // action
+    const focusEditButton = (node) => editButtonPressed && node.focus();
 
     function onToggle() {
         update({ completed: !todo.completed });
@@ -44,7 +53,15 @@
         >
             <div class="form-group">
                 <label for="todo-{todo.id}" class="todo-label">New name for '{todo.name}'</label>
-                <input bind:value={name} type="text" id="todo-{todo.id}" autocomplete="off" class="todo-text">
+                <input
+                    bind:value={name}
+                    bind:this={nameEl}
+                    use:selectOnFocus
+                    type="text"
+                    id="todo-{todo.id}"
+                    autocomplete="off"
+                    class="todo-text"
+                >
             </div>
             <div class="btn-group">
                 <button type="button" class="btn todo-cancel" on:click={onCancel}>
@@ -71,6 +88,7 @@
                 type="button"
                 class="btn"
                 on:click={onEdit}
+                use:focusEditButton
             >
                 Edit <span class="visually-hidden">{todo.name}</span>
             </button>

@@ -59,7 +59,7 @@
 <!-- Todos.svelte -->
 <div class="todoapp stack-large">
 
-  <NewTodo on:addTodo={ (e) => addTodo(e.detail) } />
+  <NewTodo autofocus on:addTodo={ (e) => addTodo(e.detail) } />
   <FilterButton bind:filter /><!-- shorthand for bind:filter={filter} -->
 
   <!-- TodosStatus -->
