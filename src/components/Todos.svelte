@@ -1,64 +1,67 @@
-<script>
+<script lang="ts">
     import NewTodo from './NewTodo.svelte';
     import FilterButton from './FilterButton.svelte';
     import TodosStatus from './TodosStatus.svelte';
     import Todo from './Todo.svelte';
     import MoreActions from './MoreActions.svelte';
-    import { alert } from '../stores.js';
+    import { alert } from '../stores';
 
-    export let todos = [];
+    import type { TodoType } from '../types/todo.type';
+    import { Filter } from '../types/filter.enum';
 
-    let todosStatus; // reference to TodosStatus instance
+    export let todos: TodoType[] = [];
+    
+    let todosStatus: TodosStatus; // reference to TodosStatus instance
 
     $: newTodoId = todos.length ? Math.max(...todos.map(t => t.id)) + 1 : 1
 
-    function addTodo(name) {
+    function addTodo(name: string) {
       todos = [...todos, { id: newTodoId, name: name, completed: false }];
       $alert = `Todo '${name}' has been added`;
     }
 
-    function removeTodo(todo) {
+    function removeTodo(todo: TodoType) {
         todos = todos.filter((t) => t.id !== todo.id);
         todosStatus.focus();
         $alert = `Todo '${todo.name}' has been deleted`;
     }
 
-    function updateTodo(todo) {
+    function updateTodo(todo: TodoType) {
       const i = todos.findIndex( (t) => t.id === todo.id );
       if (todos[i].name !== todo.name) {
         $alert = `Todo '${todos[i].name}' has been renamed to '${todo.name}'`;
       }
       if (todos[i].completed !== todo.completed) {
-        $alert = `Todo '${todos[i].name}' has been marked as '${todo.completed ? 'completed' : 'active'}'`;
+        $alert = `Todo '${todos[i].name}' has been marked as '${todo.completed ? Filter.COMPLETED : Filter.ACTIVE}'`;
       }
       todos[i] = {...todos[i], ...todo};
     }
 
-    let filter = 'all';
+    let filter: Filter = Filter.ALL;
 
     $: {
-      if (filter === 'all') {
+      if (filter === Filter.ALL) {
         $alert = 'Browsing all todos';
       }
-      if (filter === 'active') {
+      if (filter === Filter.ACTIVE) {
         $alert = 'Browsing active todos';
       }
-      if (filter === 'completed') {
+      if (filter === Filter.COMPLETED) {
         $alert = 'Browsing completed todos';
       }
     };
 
-    const filterTodos = (filter, todos) => {
-      if (filter === 'active') {
+    const filterTodos = (filter: Filter, todos: TodoType[]) => {
+      if (filter === Filter.ACTIVE) {
         return todos.filter(t => !t.completed);
-      } else if (filter === 'completed') {
+      } else if (filter === Filter.COMPLETED) {
         return todos.filter(t => t.completed);
       } else {
         return todos; // all
       }
     }
 
-    const checkAllTodos = (completed) => { 
+    const checkAllTodos = (completed: boolean) => { 
       todos = todos.map( (t) => {
         return {...t, completed: completed};
       });

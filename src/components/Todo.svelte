@@ -1,15 +1,19 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher, tick } from 'svelte';
     import { selectOnFocus } from '../actions';
+    
+    import type { TodoType } from '../types/todo.type';
+
     const dispatch = createEventDispatcher();
-    export let todo;
+    export let todo: TodoType;
 
     let editing = false; // track editing mode
     let name = todo.name; // hold the name of the todo being edited
-    let nameEl; // reference to the name input DOM node
+    let nameEl: HTMLElement; // reference to the name input DOM node
     let editButtonPressed = false;
 
-    function update(updatedTodo) {
+    // Partial<TodoType> tells TypeScript that the updatedTodo variable will hold a subset of the TodoType properties
+    function update(updatedTodo: Partial<TodoType>) {
         todo = {...todo, ...updatedTodo}; // applies modification to todo
         dispatch('update', todo); // emit update event
     }
@@ -36,7 +40,7 @@
     }
 
     // action
-    const focusEditButton = (node) => editButtonPressed && node.focus();
+    const focusEditButton = (node: HTMLElement) => editButtonPressed && node.focus();
 
     function onToggle() {
         update({ completed: !todo.completed });

@@ -1,4 +1,4 @@
-export function selectOnFocus(node) {
+export function selectOnFocus(node: HTMLInputElement) {
     // make sure node is defined and has a select() method
     if (node && typeof node.select === "function") {
         const onFocus = (event) => node.select();
