@@ -1,39 +1,29 @@
 <script>
     import NewTodo from './NewTodo.svelte';
     import FilterButton from './FilterButton.svelte';
+    import TodosStatus from './TodosStatus.svelte';
     import Todo from './Todo.svelte';
     import MoreActions from './MoreActions.svelte';
 
     export let todos = [];
 
-    $: totalTodos = todos.length;
-    $: completedTodos = todos.filter((todo) => todo.completed).length;
+    let todosStatus; // reference to TodosStatus instance
 
-    let newTodoName = '';
-    let newTodoId;
-    $: {
-      if (totalTodos === 0) {
-        newTodoId = 1;
-      } else {
-        newTodoId = Math.max(...todos.map((t) => t.id)) + 1;
-      }
-    }
+    $: newTodoId = todos.length ? Math.max(...todos.map(t => t.id)) + 1 : 1
 
     function addTodo(name) {
       todos = [...todos, { id: newTodoId, name: name, completed: false }];
-      newTodoName = '';
     }
 
     function removeTodo(todo) {
         todos = todos.filter((t) => t.id !== todo.id);
+        todosStatus.focus();
     }
 
     function updateTodo(todo) {
       const i = todos.findIndex( (t) => t.id === todo.id );
       todos[i] = {...todos[i], ...todo};
     }
-
-    //$: console.log('newTodoName: ', newTodoName)
 
     let filter = 'all';
 
@@ -63,7 +53,7 @@
   <FilterButton bind:filter /><!-- shorthand for bind:filter={filter} -->
 
   <!-- TodosStatus -->
-  <h2 id="list-heading">{completedTodos} out of {totalTodos} items completed</h2>
+  <TodosStatus bind:this={todosStatus} {todos} />
 
   <!-- Todos -->
   <ul role="list" class="todo-list stack-large" aria-labelledby="list-heading">
