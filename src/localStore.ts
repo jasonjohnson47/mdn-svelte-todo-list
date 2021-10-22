@@ -1,10 +1,9 @@
-import { writable } from 'svelte/store';
-import type { JsonValue } from './types/json.type';
+import { writable } from "svelte/store";
+import type { JsonValue } from "./types/json.type";
 
-export const localStore = (key: string, initial: JsonValue) => {
-
+export const localStore = <T extends JsonValue>(key: string, initial: T) => {
     // start initializing and converting of stuff
-    const toString = (value: JsonValue) => JSON.stringify(value, null, 2);
+    const toString = (value: T) => JSON.stringify(value, null, 2);
     const toObj = JSON.parse;
 
     if (localStorage.getItem(key) === null) {
@@ -12,16 +11,16 @@ export const localStore = (key: string, initial: JsonValue) => {
     }
 
     const saved = toObj(localStorage.getItem(key));
-    const { subscribe, set, update } = writable(saved);
+    const { subscribe, set, update } = writable<T>(saved);
     // end initializing...
 
     // redefine the set() method
     return {
         subscribe,
-        set: (value: JsonValue) => {
+        set: (value: T) => {
             localStorage.setItem(key, toString(value));
             return set(value);
         },
-        update
+        update,
     };
 };
