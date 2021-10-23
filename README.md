@@ -1,3 +1,12 @@
+This is the result of following the Svelte tutorial on MDN Web Docs
+[MDN Svelte To-do List Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
+
+I built it entirely from [Gitpod](https://www.gitpod.io/) and started with their [Svelte template](https://www.gitpod.io/docs/quickstart/svelte)
+
+[Try it out!](https://jasonjohnson47.github.io/mdn-svelte-todo-list/)
+
+# Svelte original readme content
+
 *Psst — looking for a more complete solution? Check out [SvelteKit](https://kit.svelte.dev), the official framework for building web applications of all sizes, with a beautiful development experience and flexible filesystem-based routing.*
 
 *Looking for a shareable component template instead? You can [use SvelteKit for that as well](https://kit.svelte.dev/docs#packaging) or the older [sveltejs/component-template](https://github.com/sveltejs/component-template)*
