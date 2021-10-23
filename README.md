@@ -1,7 +1,7 @@
 This is the result of following the Svelte tutorial on MDN Web Docs
 [MDN Svelte To-do List Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
 
-I built it entirely from [Gitpod](https://www.gitpod.io/) and started with their [Svelte template](https://www.gitpod.io/docs/quickstart/svelte)
+I built it entirely from [Gitpod](https://www.gitpod.io/). Gitpod is awesome!
 
 [Try it out!](https://jasonjohnson47.github.io/mdn-svelte-todo-list/)
 
